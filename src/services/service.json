@@ -3,15 +3,14 @@
         "id": 1,
         "weather": "rainy",
         "date": "2017-01-01",
-        "visibility":"poor",
-        "comment":"Pretty scary flight, I'm glad I'm alive"
+        "visibility": "poor",
+        "comment": "Pretty scary flight, I'm glad I'm alive"
     },
     {
         "id": 2,
         "weather": 2,
         "date": "2017-04-01",
-        "visibility":"sunny",
-        "comment":"Pretty scary flight, I'm glad I'm alive"
-   
+        "visibility": "sunny",
+        "comment": "Pretty scary flight, I'm glad I'm alive"
     }
 ]
