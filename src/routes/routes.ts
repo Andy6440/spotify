@@ -1,21 +1,24 @@
-import express from "express"
+import express from 'express';
+import errorHandler from '../middlewares/errorHandler';
 import { getAll } from "../services/services"
 
-
+// handle error
+// validate form
+// parse info
 const router = express.Router()
 
-router.get('/', async(_, res) => {
-    try {
-        const data = await getAll();
-        res.send(data);
-      } catch (error) {
-        res.status(500).send(error);
-      }
+router.get('/', async (_req, res, next) => {
+  try {
+    const data = await getAll();
+    res.send(data);
+  } catch (err) {
+    next(err);
+  }
 })
 router.post('/', (_, res) => {
-    console.log('wer3245')
-    res.send('post listenn')
+  res.send('post listenn')
 })
+router.use(errorHandler);
 
 
 export default router

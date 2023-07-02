@@ -1,4 +1,6 @@
- export interface SpotifyTrack {
+import { Request, Response, NextFunction } from 'express';
+
+export interface SpotifyTrack {
     album: {
         name: string;
         release_date: string;
@@ -24,8 +26,19 @@ export interface Track {
     trackName: string;
     trackUrl: string;
 }
+export interface TopTrack {
+    items: SpotifyTrack[];
+}
 
 export interface Artist {
     name: string;
     spotifyUrl: string;
+}
+
+export interface Error {
+    (err: any,
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void;
 }
