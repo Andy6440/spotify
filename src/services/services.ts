@@ -1,8 +1,6 @@
-/* 
-// Authorization token that must have been created previously. See : https://developer.spotify.com/documentation/web-api/concepts/authorization
 
+import { SpotifyTrack, Track, SpotifyArtist } from "../types";
 
-*/
 async function fetchWebApi(endpoint: string, method: string) {
 
   try {
@@ -11,7 +9,6 @@ async function fetchWebApi(endpoint: string, method: string) {
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
       method,
-      // body:JSON.stringify( [])
     });
     return await res.json();
   } catch (error) {
@@ -21,7 +18,6 @@ async function fetchWebApi(endpoint: string, method: string) {
 
 
 async function getTopTracks() {
-  // Endpoint reference : https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
   const endpoint = 'v1/me/top/tracks?time_range=short_term&limit=5';
   const method = 'GET';
   return await fetchWebApi(endpoint, method);
@@ -29,5 +25,20 @@ async function getTopTracks() {
 
 export const getAll = async () => {
   const topTracks = await getTopTracks();
-  return topTracks
+
+  return topTracks.items.map((item: SpotifyTrack) => {
+    const data: Track = {
+      albumName: item.album.name,
+      albumReleaseDate: item.album.release_date,
+      artists: item.artists.map((artist: SpotifyArtist) => {
+        return {
+          name: artist.name,
+          spotifyUrl: artist.external_urls.spotify
+        };
+      }),
+      trackName: item.name,
+      trackUrl: item.external_urls.spotify
+    }
+    return data;
+  });
 };

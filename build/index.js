@@ -8,7 +8,6 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json()); //middlewara para convertir data a json
 const port = 3000;
 app.get('/', (_req, res) => {
-    console.log('alleee');
     res.send('daleee');
 });
 app.listen(port, () => {
