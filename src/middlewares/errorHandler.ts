@@ -1,8 +1,8 @@
-import { Error } from "../types";
+import { Response ,Request} from 'express'
 
-const errorHandler: Error = (err, _req, res, _next) => {
-    console.error(err);
-    res.status(500).send(err.message);
-};
+function errorHandler(err: any,  _req: Request, res: Response) {
+    console.error(err)
+    res.status(500).send(err.message)
+}
 
 export default errorHandler

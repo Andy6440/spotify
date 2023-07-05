@@ -1,5 +1,3 @@
-import { Request, Response, NextFunction } from 'express';
-
 export interface SpotifyTrack {
     album: {
         name: string;
@@ -33,12 +31,4 @@ export interface TopTrack {
 export interface Artist {
     name: string;
     spotifyUrl: string;
-}
-
-export interface Error {
-    (err: any,
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): void;
 }
