@@ -1,48 +1,41 @@
-import axios from 'axios'
+import queryString from 'query-string'
+const token : string = Buffer.from(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64')
 
-const data = new URLSearchParams()
-data.append('grant_type', 'client_credentials')
-const code = Buffer.from('0a966421646b400ab89a00284f5e7b87:71bd1890bc8d4548b0cab0bbfa41af0e').toString('base64')
-const authOptions = {
-    method: 'post',
-    url: 'https://accounts.spotify.com/api/token',
-    headers: {
-        'Authorization': `Basic ${code}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    data: data
-}
-const getToken = async () => {
-    return await axios(authOptions)
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error('Network response was not ok')
-            }
-            return response.data
-        })
-        .catch(error => {
-            throw new Error(error)
-            // error.response.data
-        })
-}
-export const getData = async (endpoint: string) => {
-
-    const result = await getToken()
-    if (!result.access_token) {
-        throw new Error('No existe token')
-    }
-    console.log('=========',`https://api.spotify.com/${endpoint}`)
-    console.log('=========','Authorization:' ,`Bearer ${result.access_token}`)
-    const response =  await axios.get(`https://api.spotify.com/${endpoint}`, {
-        headers: {
-            Authorization: `Bearer ${result.access_token}`
-        }
+export const redirectString = () => {
+    
+    const state = generateRandomString(16)
+    const scope = 'user-read-private user-read-email'
+    
+    return  queryString.stringify({
+        response_type: 'code',
+        client_id: process.env.CLIENT_ID,
+        scope: scope,
+        redirect_uri:process.env.REDIRECT_URI,
+        state: state
     })
-    
-    if (response.status != 200) {
-        throw new Error('Network response was not ok')
-    }
-    
-    return response
 
+}
+export const callBack = (code :string |null, _state:string | null) => {
+    const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            code: code,
+            redirect_uri: process.env.REDIRECT_URI,
+            grant_type: 'authorization_code'
+        },
+        headers: {
+            'Authorization': 'Basic ' + token
+        },
+        json: true
+    }
+    return authOptions
+
+}
+export const generateRandomString = (length:number) => {
+    let result = ''
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length))
+    }
+    return result
 }
