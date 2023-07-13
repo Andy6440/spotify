@@ -1,41 +1,45 @@
 import express from 'express'
 import errorHandler from '../middlewares/errorHandler'
-import { getAll } from '../services/spotify'
-import { getAccessToken, redirectString } from '../services/auth'
-
+import { getAccessToken, redirectString,getUser} from '../services/auth'
+import {getAll} from '../services/spotify'
 const router = express.Router()
 
-
 router.get('/login', function (_req, res) {
-
+    res.clearCookie('code')
     const query = redirectString()
-    res.cookie(query.stateKey, query.state)
     res.redirect(`https://accounts.spotify.com/authorize?${query.param}`)
 })
 
-router.get('/callback', async(req, res, _next) => {
-    const code = req.query.code 
 
-    if (typeof code !== 'string') {
-        throw new Error('code is not defined or is not a string')
+router.get('/callback', async(req, res, next) => {
+    
+
+    const code = req.query.code || null
+    if(typeof code !=='string'){
+        throw new Error('nooou')
     }
-   const result = await getAccessToken()
-   res.cookie('access_spotify', result)
-   res.send(result)
+    res.cookie('code',code)
+    try {
+        const tokens = await getAccessToken(code)        
+        const user = await getUser(tokens.access_token)
+        res.send({user:user,token:tokens.access_token});
+    } catch (err) {
+       next(err)
+    }
 })
 
 
-router.get('/topTrack', (_req, res, next) => {
-    getAll()
+
+router.get('/topTrack', async(_req, res, next) => {
+    const token = ""
+
+    getAll(token)
         .then(response => {
             res.send(response)
         })
         .catch(err => next(err))
 })
 
-// function isString(value: any): value is string {
-//     return typeof value === 'string'
-// }
 
 
 router.use(errorHandler)

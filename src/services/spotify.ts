@@ -1,58 +1,54 @@
-// import { SpotifyArtist, SpotifyTrack, TopTrack, Track } from "../interfaces/spotify";
-// import axios from 'axios'
-import jwt from 'jsonwebtoken'
-// import { getAccessToken } from './auth'
-// import axios from 'axios'
 
- 
+import axios from 'axios'
+import { Artist, SpotifyArtist, SpotifyTrack, TopTrack, Track } from '../interfaces/spotify'
 
-export const getAll = async () => {
-    // const endpoint = 'v1/me/top/tracks?time_range=short_term&limit=5'
-    const secret = process.env.JTW_PASSWORD
-
-    if (!secret) {
-        throw new Error('SECRET is not defined')
-    }
-    const jwttoken = process.env.TOKEN
-
-    if (!jwttoken) {
-        throw new Error('jwttoken is not defined')
-    }
-
-    const auth = jwt.decode(jwttoken, { json: true })
-
-    if(!auth || !auth.code){
-        throw new Error('auth is not valid')
-    }
-    // const token = await  getAccessToken()
-    // const response = await axios.get('https://api.spotify.com/v1/me/tracks?offset=0&limit=5', {
-    //     headers: {
-    //         'Authorization': `Bearer ${token}`
-    //     }
-    // })
-    // return  response
-    return auth
+export const getTopTrack = (token:string):Promise<TopTrack> => {
+    const endpoint = 'v1/me/top/tracks?time_range=short_term&limit=5'
+    // const token = 'BQCDPgNVYSQxEUk1n2rigF4XeYt96aK2HK0M1a4AyLCj3dVUgoocviLWYxGhJPNPMIttwPnunN_wf1Hq3iCtcXIPgrQc0GL5hu0jm2pFcYoCDxg6k-NCcyfJVG6XukycG_u7rPxHm18lVwt_YRruz5ewcystKYfmqvetXjRSATkJ7NQ5Mm-idNdGAwa8nz3hETfoN056mUdIN5Rko5rVu33h5wbhbI-3N6TlhaPuKBppDEYgOqFScndDZtu0OtONCcY7Kg'
+  
+    return new Promise((resolve, reject) => {
+        axios
+            .get(`https://api.spotify.com/${endpoint}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then((response) => {
+                resolve(response.data as TopTrack)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
 }
 
-// export const getAll = async () => {
-//     return await getTopTracks()
-//     // .then((respose: unknown) => {
-//     //   const topTrackData = respose as TopTrack;
-//     //   return topTrackData.items.map((item: SpotifyTrack) => {
-//     //     return {
-//     //       albumName: item.album.name,
-//     //       albumReleaseDate: item.album.release_date,
-//     //       artists: item.artists.map((artist: SpotifyArtist) => {
-//     //         return {
-//     //           name: artist.name,
-//     //           spotifyUrl: artist.external_urls.spotify
-//     //         };
-//     //       }),
-//     //       trackName: item.name,
-//     //       trackUrl: item.external_urls.spotify
-//     //     } as Track
-//     //   })
-//     // }).catch(error => {
-//     //   throw new Error(error);
-//     // })
-// }
+
+
+export const getAll =  (token:string):Promise<Track[]> => {
+    return new Promise((resolve,reject)=>{
+        getTopTrack(token)
+            .then((response) => {
+                const topTrackData = response as TopTrack
+                const items = topTrackData.items.map((item: SpotifyTrack) => {
+                    const artists = item.artists.map((artist: SpotifyArtist) => {
+                        return {
+                            name: artist.name,
+                            spotifyUrl: artist.external_urls.spotify,
+                        } as Artist
+                    })
+    
+                    return {
+                        albumName: item.album.name,
+                        albumReleaseDate: item.album.release_date,
+                        artists,
+                        trackName: item.name,
+                        trackUrl: item.external_urls.spotify,
+                    } as Track
+                })
+    
+                resolve(items)
+            }).catch(error => {
+                reject(error)
+            })
+    })
+}

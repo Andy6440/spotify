@@ -32,3 +32,9 @@ export interface Artist {
     name: string;
     spotifyUrl: string;
 }
+
+export interface SpotifyAccess {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+  }
