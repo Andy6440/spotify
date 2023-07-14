@@ -7,7 +7,6 @@ import 'dotenv/config'
 const app = express()
 const port =process.env.PORT
 app.use(cookieParser())
-
 app.use(express.json()) //middlewara para convertir data a json
 app.use('/',router)
 

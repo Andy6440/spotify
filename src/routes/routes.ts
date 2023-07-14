@@ -1,48 +1,37 @@
 import express from 'express'
 import errorHandler from '../middlewares/errorHandler'
-import { getAccessToken, redirectString,getUser} from '../services/auth'
-import {getAll} from '../services/spotify'
+import { login,callback } from '../controllers/userController'
+import { topTrack } from '../controllers/trackController'
+import { validateRequiredParam, validateTokenParam } from '../middlewares/validation'
 const router = express.Router()
 
-router.get('/login', function (_req, res) {
-    res.clearCookie('code')
-    const query = redirectString()
-    res.redirect(`https://accounts.spotify.com/authorize?${query.param}`)
-})
+/**
+ *  UserController Routes
+ * 
+ * 
+ */
+
+// Route: GET /login
+// Description: Endpoint for user login
+router.get('/login',login)
+
+// Route: GET /callback
+// Description: Endpoint for callback after user authentication
+router.get('/callback', callback, validateRequiredParam('code'))
 
 
-router.get('/callback', async(req, res, next) => {
-    
+/**
+ *  TrackController Routes
+ * 
+ * 
+ */
 
-    const code = req.query.code || null
-    if(typeof code !=='string'){
-        throw new Error('nooou')
-    }
-    res.cookie('code',code)
-    try {
-        const tokens = await getAccessToken(code)        
-        const user = await getUser(tokens.access_token)
-        res.send({user:user,token:tokens.access_token});
-    } catch (err) {
-       next(err)
-    }
-})
+// Route: GET /topTrack
+// Description: Endpoint to get top track
+router.get('/topTrack', topTrack, validateTokenParam())
 
 
-
-router.get('/topTrack', async(_req, res, next) => {
-    const token = ""
-
-    getAll(token)
-        .then(response => {
-            res.send(response)
-        })
-        .catch(err => next(err))
-})
-
-
-
+// Middleware for handling errors
 router.use(errorHandler)
-
 
 export default router

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
+import AppError from '../models/errors/AppError'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 const generateRandomString = (length : number) => {
@@ -11,9 +12,6 @@ const generateRandomString = (length : number) => {
     }
     return text
 }
-  
-  
-
 
 export const  redirectString = () =>{
     
@@ -35,22 +33,7 @@ export const  redirectString = () =>{
     }
 }
 
-// export const  getAccessToken = async() => {
-//     const b64 = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64')
-  
-//     return (
-//         await axios({
-//             method: 'POST',
-//             url: AUTH_URL,
-//             data: 'grant_type=client_credentials',
-//             headers: {
-//                 Authorization: `Basic ${b64}`,
-//                 'content-type': 'application/x-www-form-urlencoded',
-//             },
-//         })
-//     ).data
-// }
-export const  getAccessToken = (code:string) => {
+export const  getAccessToken = async(code:string) => {
     const postHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -77,11 +60,11 @@ export const  getAccessToken = (code:string) => {
                     refresh_token: response.data.refresh_token,
                 }
             } else {
-                throw new Error('Invalid token')
+                throw new AppError(401,'Invalid token')
             }
         })
         .catch((error) => {
-            throw new Error(error.response.data.error)
+            throw new AppError(error.response.status,error.response.data.error)
         })
 }
 export const  getUser = async(access_token:string) => {
@@ -97,13 +80,9 @@ export const  getUser = async(access_token:string) => {
         url: getUrl,
         headers: getHeaders,
     }).then((response) => {
-        if (response.status === 200) {
-            return response.data
-        } else {
-            throw new Error('Failed to get user profile')
-        }
+        return response.data
     })
         .catch((error) => {
-            throw new Error(error.response.data.error)
+            throw new AppError(error.response.status,error.response.data.error)
         })
 }

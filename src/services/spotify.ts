@@ -22,8 +22,6 @@ export const getTopTrack = (token:string):Promise<TopTrack> => {
     })
 }
 
-
-
 export const getAll =  (token:string):Promise<Track[]> => {
     return new Promise((resolve,reject)=>{
         getTopTrack(token)
