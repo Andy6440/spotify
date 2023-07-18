@@ -10,10 +10,5 @@ export default function errorHandler(err: Error, _req: Request, res: Response) {
         statusCode = err.statusCode
         message = err.message
     }
-
-    res.status(statusCode).json({
-        error: {
-            message,
-        },
-    })
+    res.status(statusCode).json({ error: message })
 }
