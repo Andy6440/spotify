@@ -2,7 +2,7 @@ import express from 'express'
 import errorHandler from '../middlewares/errorHandler'
 import { login,callback } from '../controllers/userController'
 import { likedSongs, topTrack } from '../controllers/trackController'
-import { validateRequiredParam, validateTokenParam } from '../middlewares/validation'
+import { validateNumberParam, validateRequiredParam, validateTokenParam } from '../middlewares/validation'
 const router = express.Router()
 
 /**
@@ -28,7 +28,7 @@ router.get('/callback', callback, validateRequiredParam('code'))
 
 // Route: GET /topTrack
 // Description: Endpoint to get top track
-router.get('/topTrack', topTrack, validateTokenParam())
+router.get('/topTrack', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset') , topTrack)
 
 // Route: GET /topTrack
 // Description: Endpoint to get top track

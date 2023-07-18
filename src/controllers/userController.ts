@@ -16,7 +16,6 @@ export const callback = async(req:Request,res :Response) =>{
         const user = await getUser(tokens.access_token)
         res.send({user:user,token:tokens.access_token})
     } catch ( err) {
-        console.log(err)
         throw new AppError(401,'An error occurred in callback')
     }
 }
