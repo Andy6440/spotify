@@ -8,7 +8,7 @@
     "lint": "ts-standard",
     "eslint": "./node_modules/.bin/eslint --init",
     "start": "node build/index.js",
-    "tsc": "tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
