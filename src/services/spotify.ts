@@ -4,8 +4,10 @@ import { formatTrack } from '../helpers/TrackHelper'
 import { TopTrack, Track } from '../interfaces/spotify'
 import { get } from '../utils/services'
 
-export const getAll = ():Promise<Track[]> => {
-    const endpoint = 'v1/me/top/tracks?time_range=short_term&limit=5'
+export const getAll = (limit: string ,offset:string ):Promise<Track[]> => {
+    const newLimit =  parseInt(limit ) ||process.env.LIMIT
+    const newOffset =  parseInt(offset) || process.env.OFFSET
+    const endpoint = `v1/me/top/tracks?time_range=short_term&offset=${newOffset}&limit=${newLimit}`
     return new Promise((resolve, reject) => {
         get(endpoint)
             .then((response) => {
@@ -20,9 +22,12 @@ export const getAll = ():Promise<Track[]> => {
 }
 
 
-export const getLikedSongs =  ()/* :Promise<Track[]> */ => {
+export const getLikedSongs =   (limit: string ,offset:string ):Promise<Track[]> => {
     // const endpoint = 'v1/me/tracks?limit=20&offset=0'
-    const endpoint = 'v1/me/top/tracks?time_range=short_term&limit=5'
+    const newLimit =  parseInt(limit ) ||process.env.LIMIT
+    const newOffset =  parseInt(offset) || process.env.OFFSET
+    console.log(newLimit,newOffset)
+    const endpoint = 'v1/me/tracks?offset=0&limit=20'
     return new Promise((resolve,reject)=>{
         get(endpoint) .then((response) => {
             const topTrackData = response as TopTrack

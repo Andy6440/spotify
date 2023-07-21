@@ -17,7 +17,7 @@ router.get('/login',login)
 
 // Route: GET /callback
 // Description: Endpoint for callback after user authentication
-router.get('/callback', callback, validateRequiredParam('code'))
+router.get('/callback', validateRequiredParam('code'), callback)
 
 
 /**
@@ -32,7 +32,7 @@ router.get('/topTrack', validateTokenParam(),validateNumberParam('limit'),valida
 
 // Route: GET /topTrack
 // Description: Endpoint to get top track
-router.get('/likedSongs', likedSongs, validateTokenParam())
+router.get('/likedSongs', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset'), likedSongs)
 
 
 // Middleware for handling errors

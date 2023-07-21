@@ -1,10 +1,10 @@
 export interface SpotifyTrack {
+    name: string;
+    artists: SpotifyArtist[];
     album: {
         name: string;
         release_date: string;
     };
-    artists: SpotifyArtist[];
-    name: string;
     external_urls: {
         spotify: string;
     };
@@ -18,10 +18,10 @@ export interface SpotifyArtist {
 }
 
 export interface Track {
+    trackName: string;
+    artists: Artist[];
     albumName: string;
     albumReleaseDate: string;
-    artists: Artist[];
-    trackName: string;
     trackUrl: string;
 }
 export interface TopTrack {
