@@ -64,7 +64,7 @@ export const  getAccessToken = async(code:string) => {
             }
         })
         .catch((error) => {
-            throw new AppError(error.response.status,error.response.data.error)
+            throw new AppError(error.response.status,error.response.data.error_description)
         })
 }
 export const  getUser = async(access_token:string) => {

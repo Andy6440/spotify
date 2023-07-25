@@ -8,7 +8,7 @@ export const validateRequiredParam = (paramName: string) => {
         const param = req.query[paramName]
   
         if (!param) {
-            throw new AppError(400, `Required parameter "${paramName}" is missing`)
+            next (new AppError(400, `Required parameter "${paramName}" is missing`))
         }
   
         next()
@@ -21,7 +21,8 @@ export const validateTokenParam = () => {
         const token = process.env.TOKEN || null
 
         if (typeof token !=='string') {
-            throw new AppError(400, 'Invalid email')
+            next(new AppError(400, 'Invalid email'))
+            
         }
         next()
     }
@@ -32,7 +33,7 @@ export const validateNumberParam = (name:string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const param = req.query[name] ? parseInt(req.query[name] as string) : null
         if (param === null || isNaN(param)) {
-            throw new AppError(400, `${name}: Invalid type of number`)
+            next(new AppError(400, `${name}: Invalid type of number`))
         }
         next()
     }
