@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  app:
+    image: client_spotify # Nombre deseado para tu imagen
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./src:/usr/src/src
+      - ./tsconfig.json:/usr/src/tsconfig.json
+volumes:
+  app_data:
