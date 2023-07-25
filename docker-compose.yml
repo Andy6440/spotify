@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 
 services:
   app:
@@ -7,7 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '8888:8888'
     volumes:
-      - ./src:/usr/src/src 
+      - ./src:/usr/src/src
       - ./tsconfig.json:/usr/src/tsconfig.json
+volumes:
+  app_data:

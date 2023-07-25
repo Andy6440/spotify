@@ -6,7 +6,7 @@ WORKDIR /usr/src/
 # Copy file  package.json and package-lock.json to install  app dependencies
 COPY package*.json ./
 COPY tsconfig.json ./
-
+COPY .env ./
 # Intall app dependencies
 RUN npm install
 
@@ -14,13 +14,9 @@ RUN npm install
 
 COPY ./src ./src
 
-
-# Compila TypeScript en JavaScript antes de ejecutar la aplicación
-RUN npm run build
 # Expone el puerto que utilizará tu aplicación
 
-EXPOSE 3000
+EXPOSE 8888
 
-# Comando para ejecutar tu aplicación
-
-CMD [ "node", "build/index.js" ]
+# Start the application using "npm run dev" when the container starts
+CMD ["npm", "run", "dev"]
