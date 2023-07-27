@@ -1,7 +1,8 @@
 import express from 'express'
 import { login,callback } from '../controllers/userController'
 import { likedSongs, topTrack } from '../controllers/trackController'
-import { validateNumberParam, validateRequiredParam, validateTokenParam } from '../middlewares/validation'
+import { validateNumberParam, validateRequiredParam, validateTokenParam,validateStringParam } from '../middlewares/validation'
+import { getPlaylist } from '../controllers/playlistController'
 const router = express.Router()
 
 /**
@@ -33,5 +34,11 @@ router.get('/topTrack', validateTokenParam(),validateNumberParam('limit'),valida
 // Description: Endpoint to get top track
 router.get('/likedSongs', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset'), likedSongs)
 
+/**
+ *  PlaylistController Routes
+ * 
+ * 
+*/
+router.get('/playlist/:id', validateTokenParam(),validateStringParam('id'), getPlaylist)
 
 export default router
