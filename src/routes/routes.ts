@@ -1,8 +1,9 @@
 import express from 'express'
 import { login,callback } from '../controllers/userController'
 import { likedSongs, topTrack } from '../controllers/trackController'
-import { validateNumberParam, validateRequiredParam, validateTokenParam,validateStringParam } from '../middlewares/validation'
-import { getPlaylist } from '../controllers/playlistController'
+import { validateNumberParam, validateRequiredParam, validateTokenParam,validateStringParam,validateSpotifyUserId } from '../middlewares/validation'
+import { createPlaylist, getPlaylist } from '../controllers/playlistController'
+import { createPlaylistParams } from '../middlewares/RequestPlaylistValidation'
 const router = express.Router()
 
 /**
@@ -39,6 +40,13 @@ router.get('/likedSongs', validateTokenParam(),validateNumberParam('limit'),vali
  * 
  * 
 */
+
+// Route: GET /playlist
+// param: id
+// Description: Endpoint to get playlist by id
 router.get('/playlist/:id', validateTokenParam(),validateStringParam('id'), getPlaylist)
 
+// Route: POST /playlist
+// Description: Endpoint to create playlist
+router.post('/playlist', validateTokenParam(),validateSpotifyUserId(),createPlaylistParams(), createPlaylist)
 export default router

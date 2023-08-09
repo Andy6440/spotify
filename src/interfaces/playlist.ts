@@ -1,4 +1,10 @@
 
+export interface CreatePlaylist {
+    name: string;
+    description: string;
+    public: boolean
+}
+
 export interface Playlist {
     name: string;
     id: string;

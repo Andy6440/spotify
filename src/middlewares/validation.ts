@@ -27,6 +27,18 @@ export const validateTokenParam = () => {
         next()
     }
 }
+// Middleware for validating an spotify user id
+export const validateSpotifyUserId = () => {
+    return (_req: Request, _res: Response, next: NextFunction) => {
+        const userId = process.env.USER_ID || null
+
+        if (typeof userId !=='string') {
+            next(new AppError(400, 'Invalid spotify user id'))
+            
+        }
+        next()
+    }
+}
 // Middleware for validating an number param
 
 export const validateNumberParam = (name:string) => {
