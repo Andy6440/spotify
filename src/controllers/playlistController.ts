@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { create, getPlaylistById,editDetails, getItemsById } from '../services/playlist'
-import { CreatePlaylist } from '../interfaces/playlist'
+import { create, getPlaylistById,editDetails, getItemsById, saveItems } from '../services/playlist'
+import { CreatePlaylist, SaveItems } from '../interfaces/playlist'
 
 export const getPlaylist = (req:Request,res :Response,next:NextFunction) =>{    
     const id = req.params.id as string
@@ -12,6 +12,12 @@ export const createPlaylist = (req:Request,res :Response,next:NextFunction) =>{
     const params = req.body as CreatePlaylist  
     
     create(id,params).then(response=> res.send(response)).catch(err => next(err))    
+}
+export const insertItems = (req:Request,res :Response,next:NextFunction) =>{    
+    const id = req.params.id as string
+    const params = req.body as SaveItems  
+    
+    saveItems(id,params).then(response=> res.send(response)).catch(err => next(err))    
 }
 export const changePlaylistDetails = (req:Request,res :Response,next:NextFunction) =>{    
     const id = req.params.id as string

@@ -4,6 +4,10 @@ export interface CreatePlaylist {
     description: string;
     public: boolean
 }
+export interface SaveItems {
+    traks: string[];
+    position: number
+}
 
 export interface Playlist {
     name: string;
