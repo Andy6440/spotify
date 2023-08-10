@@ -11,5 +11,6 @@ export default function errorHandler(err: Error, _req: Request, res: Response) {
         message = err.message
     }
     const response ={ error: message }
+    console.error(response)
     res.status(statusCode).json(response)
 }
