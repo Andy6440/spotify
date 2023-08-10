@@ -1,5 +1,5 @@
-import { formatPlaylist } from '../helpers/PlaylistHelper'
-import {  CreatePlaylist, Playlist } from '../interfaces/playlist'
+import { formatItem, formatPlaylist } from '../helpers/PlaylistHelper'
+import {  CreatePlaylist, Item, Playlist } from '../interfaces/playlist'
 import { get, post, put } from '../utils/services'
 
 
@@ -69,6 +69,21 @@ export const editDetails = (id: string, params: CreatePlaylist): Promise<string>
                 
                 }
                 resolve(message)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+
+
+export const getItemsById = (id: string,limit : string , offset :string ):Promise<Item[]> => {
+    const endpoint = `v1/playlists/${id}/tracks?time_range=short_term&offset=${offset}&limit=${limit}`
+    return new Promise((resolve, reject) => {
+        get(endpoint)
+            .then((response) => {
+                const result = formatItem(response.items)
+                resolve(result)
             })
             .catch((error) => {
                 reject(error)

@@ -16,7 +16,7 @@ export const formatPlaylist = (response : Playlist) =>{
     } as Playlist
     
 }
-const formatItem = (items:Item[]) =>{
+export const formatItem = (items:Item[]) =>{
     return items.map((item: Item) => {
         const track = formatTrack(item.track)        
         
