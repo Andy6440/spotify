@@ -1,22 +1,22 @@
 
 import { Request, Response, NextFunction } from 'express'
-import AppError from '../models/errors/AppError'
+import ValidationError from '../models/errors/ValidationError.'
 
 // Middleware for validating a required parameter
 export const validatePlaylistParams = () => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const param = req.body
         if (!param.name) {
-            next (new AppError(400, 'Required parameter  name is missing'))
+            next (new ValidationError('Required parameter  name is missing'))
         }
         if (!param.description) {
-            next (new AppError(400, 'Required parameter  description is missing'))
+            next (new ValidationError( 'Required parameter  description is missing'))
         } 
         if (typeof param.name !== 'string') {
-            return next(new AppError(400, 'Name: Invalid type, expected string'))
+            return next(new ValidationError('Name: Invalid type, expected string'))
         }
         if (typeof param.description !== 'string') {
-            return next(new AppError(400, 'Description: Invalid type, expected string'))
+            return next(new ValidationError( 'Description: Invalid type, expected string'))
         }
         next()
     }

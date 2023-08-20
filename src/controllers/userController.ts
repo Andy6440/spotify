@@ -1,6 +1,6 @@
 import {  NextFunction, Request, Response } from 'express'
 import { getAccessToken, getUser, redirectString } from '../services/auth'
-import AppError from '../models/errors/AppError'
+import AuthenticationError from '../models/errors/AuthenticationError'
 
 
 export const login = (_req:Request,res :Response,next:NextFunction) =>{
@@ -10,7 +10,7 @@ export const login = (_req:Request,res :Response,next:NextFunction) =>{
         const path  = `https://accounts.spotify.com/authorize?${query.param}`
         res.redirect(path)
     } catch ( err) {
-        next(new AppError(401,'An error occurred in login'))
+        next(new AuthenticationError('An error occurred in login'))
     }
 }
 export const callback = async(req:Request,res :Response,next:NextFunction) =>{
@@ -21,6 +21,6 @@ export const callback = async(req:Request,res :Response,next:NextFunction) =>{
         const user = await getUser(tokens.access_token)
         res.send({user:user,token:tokens.access_token})
     } catch ( err) {
-        next(new AppError(401,'An error occurred in callback'))
+        next(new AuthenticationError('An error occurred in callback'))
     }
 }
