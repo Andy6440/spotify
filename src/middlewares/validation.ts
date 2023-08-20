@@ -58,12 +58,18 @@ export const validateNumberParam = (name:string) => {
 }
 export const validateStringParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        const paramValue = req.params[paramName]
+        let paramValue = null
+        if(req?.query[paramName]!== undefined && req?.query[paramName]!==null ){
+            paramValue= req.query[paramName] as string
+        }else if(req.body[paramName]!== undefined  &&  req?.body[paramName]!==null){
+            paramValue= req.body[paramName] as string
+        }else if(req.params[paramName]!== undefined  &&  req?.params[paramName]!==null){
+            paramValue= req.params[paramName] as string
+        }
         // Verificar si el valor del parámetro es una cadena válida
         if (typeof paramValue !== 'string') {
             return next(new AppError(400, `${paramName}: Invalid type, expected string`))
-        }
-  
+        }  
         // Si llegamos aquí, el valor del parámetro es una cadena válida
         next()
     }
@@ -74,7 +80,7 @@ export const validateArrayUriParam = (paramName: string) => {
         // Verificar si el valor del parámetro es una array válida
         let regex =  null
         switch (paramName) {
-        case 'traks':
+        case 'tracks':
             regex = /^spotify:track:[a-zA-Z0-9]{22}$/
             break
 
@@ -86,6 +92,18 @@ export const validateArrayUriParam = (paramName: string) => {
         }
   
         // Si llegamos aquí, el valor del parámetro es una cadena válida
+        next()
+    }
+}
+export const validateArrayTracksParam = (paramName: string) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+        const paramValue =req.body ? req.body[paramName] : null
+      
+        const regex = /"uri":\s*"spotify:track:[a-zA-Z0-9]{22}"/g
+        const matches = JSON.stringify(paramValue).match(regex)
+        if( matches && matches.length !== paramValue.length){
+            return next(new AppError(400, `${paramName}: Invalid Type : expected array of string like spotify:track:`))
+        }
         next()
     }
 }

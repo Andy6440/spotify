@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import AppError from '../models/errors/AppError'
 
 // Middleware for validating a required parameter
-export const createPlaylistParams = () => {
+export const validatePlaylistParams = () => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const param = req.body
         if (!param.name) {

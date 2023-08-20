@@ -5,8 +5,12 @@ export interface CreatePlaylist {
     public: boolean
 }
 export interface SaveItems {
-    traks: string[];
+    tracks: string[];
     position: number
+}
+export interface RemoveItems {
+    tracks: string[];
+    snapshot_id: string
 }
 
 export interface Playlist {
@@ -36,7 +40,7 @@ export interface Artist {
     name: string;
     type: string;
     uri: string;
-  }
+}
   
 export interface Album {
     album_type: string;
@@ -46,7 +50,7 @@ export interface Album {
     name: string;
     release_date: string;
     total_tracks: number;
-  }
+}
   
 export interface Track {
     album: Album;
@@ -58,4 +62,4 @@ export interface Track {
     track: boolean;
     track_number: number;
     type: string;
-  }
+}
