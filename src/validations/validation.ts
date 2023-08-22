@@ -16,29 +16,6 @@ export const validateRequiredParam = (paramName: string) => {
         next()
     }
 }
-  
-// Middleware for validating an token
-export const validateTokenParam = () => {
-    return (_req: Request, _res: Response, next: NextFunction) => {
-        const token = process.env.TOKEN || null
-        if (typeof token !=='string') {
-            return  next(new ValidationError( 'Invalid email'))            
-        }
-        next()
-    }
-}
-
-// Middleware for validating an spotify user id
-export const validateSpotifyUserId = () => {
-    return (_req: Request, _res: Response, next: NextFunction) => {
-        const userId = process.env.USER_ID || null
-        if (typeof userId !=='string') {
-            return next(new ValidationError( 'Invalid spotify user id'))
-            
-        }
-        next()
-    }
-}
 
 // Middleware for validating an number parameter
 export const validateNumberParam = (name:string) => {

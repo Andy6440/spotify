@@ -1,7 +1,7 @@
 
 import express from 'express'
 import { callback, login } from '../controllers/userController'
-import { validateRequiredParam } from '../middlewares/validation'
+import { validateRequiredParam } from '../validations/validation'
 const authRoutes = express.Router()
 /**
  *  UserController Routes

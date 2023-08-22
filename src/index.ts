@@ -1,10 +1,11 @@
 import express from 'express'
 import router from './routes/routes'
 import cookieParser from 'cookie-parser'
-
 import 'dotenv/config'
 import errorHandler from './middlewares/errorHandler'
+import { validateEnvVariables } from './validations/startupValidations'
 
+validateEnvVariables()
 const app = express()
 const port =process.env.PORT
 app.use(cookieParser())
