@@ -2,12 +2,16 @@
 import { Request, Response, NextFunction } from 'express'
 import ValidationError from '../models/errors/ValidationError.'
 
+// Extract a parameter value from a request
+const extractParamValue = (req: Request, paramName: string): any => {
+    return req.query[paramName] || req.body[paramName] || req.params[paramName] || null
+}
 // Middleware for validating a required parameter
 export const validateRequiredParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        const param = req.query[paramName]  
+        const param = extractParamValue(req, paramName)
         if (!param) {
-            next (new ValidationError(`Required parameter "${paramName}" is missing`))
+            return next (new ValidationError(`Required parameter "${paramName}" is missing`))
         }  
         next()
     }
@@ -18,7 +22,7 @@ export const validateTokenParam = () => {
     return (_req: Request, _res: Response, next: NextFunction) => {
         const token = process.env.TOKEN || null
         if (typeof token !=='string') {
-            next(new ValidationError( 'Invalid email'))            
+            return  next(new ValidationError( 'Invalid email'))            
         }
         next()
     }
@@ -29,7 +33,7 @@ export const validateSpotifyUserId = () => {
     return (_req: Request, _res: Response, next: NextFunction) => {
         const userId = process.env.USER_ID || null
         if (typeof userId !=='string') {
-            next(new ValidationError( 'Invalid spotify user id'))
+            return next(new ValidationError( 'Invalid spotify user id'))
             
         }
         next()
@@ -39,15 +43,10 @@ export const validateSpotifyUserId = () => {
 // Middleware for validating an number parameter
 export const validateNumberParam = (name:string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        let param = null  
-        if(req?.query[name]!== undefined && req?.query[name]!==null ){
-            param= parseInt(req.query[name] as string)
-        }else if(req.body[name]!== undefined  &&  req?.body[name]!==null){
-            console.log('body',req.body[name])
-            param =parseInt(req.body[name])
-        }
+        let param = extractParamValue(req, name)  
+        param= parseInt(param)
         if (param === null || isNaN(param)) {
-            next(new ValidationError( `${name}: Invalid type of number`))
+            return next(new ValidationError( `${name}: Invalid type of number`))
         }
         next()
     }
@@ -56,14 +55,7 @@ export const validateNumberParam = (name:string) => {
 // Middleware for validating an string parameter
 export const validateStringParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        let paramValue = null
-        if(req?.query[paramName]!== undefined && req?.query[paramName]!==null ){
-            paramValue= req.query[paramName] as string
-        }else if(req.body[paramName]!== undefined  &&  req?.body[paramName]!==null){
-            paramValue= req.body[paramName] as string
-        }else if(req.params[paramName]!== undefined  &&  req?.params[paramName]!==null){
-            paramValue= req.params[paramName] as string
-        }
+        const paramValue = extractParamValue(req, paramName) 
         // Verificar si el valor del parámetro es una cadena válida
         if (typeof paramValue !== 'string') {
             return next(new ValidationError(`${paramName}: Invalid type, expected string`))
@@ -76,7 +68,7 @@ export const validateStringParam = (paramName: string) => {
 // Middleware for validating an array of string parameter
 export const validateArrayUriParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
-        const paramValue =req.body ? req.body[paramName] : null
+        const paramValue =extractParamValue(req, paramName)
         // Verificar si el valor del parámetro es una array válida
         let regex =  null
         switch (paramName) {

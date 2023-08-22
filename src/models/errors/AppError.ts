@@ -1,13 +1,13 @@
 class AppError extends Error {
     public readonly statusCode: number;
-    public  message = 'An error occurred.'
     
-    constructor(statusCode: number, message?: string) {
-       
-        super(message)
+    constructor(statusCode: number, data?: string) {
+        super(data)
         this.statusCode = statusCode
-        if (!message) {
+        if (!data) {
             this.message = this.getDefaultMessage(statusCode)
+        }else{
+            this.message = data
         }
     }
 
