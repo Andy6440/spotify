@@ -4,7 +4,14 @@ import ValidationError from '../models/errors/ValidationError.'
 
 // Extract a parameter value from a request
 const extractParamValue = (req: Request, paramName: string): any => {
-    return req.query[paramName] || req.body[paramName] || req.params[paramName] || null
+    if(req.query[paramName] !== undefined){
+        return req.query[paramName]
+    }else if(req.body[paramName] !== undefined){
+        return req.body[paramName]
+    }else if(req.params[paramName] !== undefined){
+        return req.params[paramName]
+    }
+    return null
 }
 // Middleware for validating a required parameter
 export const validateRequiredParam = (paramName: string) => {
@@ -43,36 +50,39 @@ export const validateStringParam = (paramName: string) => {
 }
 
 // Middleware for validating an array of string parameter
-export const validateArrayUriParam = (paramName: string) => {
+export const validateArrayParam = (paramName: string) => {
+   
     return (req: Request, _res: Response, next: NextFunction) => {
-        const paramValue =extractParamValue(req, paramName)
-        // Verificar si el valor del parámetro es una array válida
-        let regex =  null
-        switch (paramName) {
-        case 'tracks':
-            regex = /^spotify:track:[a-zA-Z0-9]{22}$/
-            break
-
-        default:
-            regex =  /^spotify:artist:[a-zA-Z0-9]{22}$/
+        const paramValue =req.body ? req.body[paramName] : null 
+        if(typeof paramValue !== 'object'     ){
+            return next(new ValidationError(`${paramName}: Invalid Type : expected an array`))
         }
-        if (typeof paramValue !== 'object' || regex && !regex.test(paramValue)) {
-            return next(new ValidationError( `${paramName}: Invalid Type : expected array of string like spotify:track:`))
-        }  
-        // Si llegamos aquí, el valor del parámetro es una cadena válida
-        next()
-    }
-}
-
-// Middleware for validating an array of string parameter
-export const validateArrayTracksParam = (paramName: string) => {
-    return (req: Request, _res: Response, next: NextFunction) => {
-        const paramValue =req.body ? req.body[paramName] : null      
-        const regex = /"uri":\s*"spotify:track:[a-zA-Z0-9]{22}"/g
-        const matches = JSON.stringify(paramValue).match(regex)
-        if( matches && matches.length !== paramValue.length){
-            return next(new ValidationError(`${paramName}: Invalid Type : expected array of string like spotify:track:`))
+        let regex=null
+        let error=null
+        if(paramValue ===  'tracks'){
+            regex = /"uri":\s*"spotify:track:[a-zA-Z0-9]{22}"/g
+            const matches = JSON.stringify(paramValue).match(regex)
+            if( matches && matches.length !== paramValue.length){
+                error = true
+            }
+        }else{
+            switch (paramName) {
+            case 'uris':
+                regex = /^spotify:track:[a-zA-Z0-9]{22}$/
+                break
+            
+            default:
+                regex =  /^spotify:artist:[a-zA-Z0-9]{22}$/
+            } 
+            if (typeof paramValue !== 'object' || regex && !regex.test(paramValue)) {
+                error = true
+            }   
         }
+
+        if(error){
+            return next(new ValidationError(`${paramName}: Invalid Track format in array`))
+        }
+       
         next()
     }
 }

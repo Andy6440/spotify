@@ -1,6 +1,6 @@
 
 import express from 'express'
-import { validateStringParam, validateNumberParam,  validateArrayUriParam, validateArrayTracksParam } from '../validations/validation'
+import { validateStringParam, validateNumberParam,   validateArrayParam } from '../validations/validation'
 import { changePlaylistDetails, createPlaylist, deleteItems, getItems, getPlaylist, insertItems } from '../controllers/playlistController'
 import { validatePlaylistParams } from '../validations/RequestPlaylistValidation'
 const playlistRoutes = express.Router()
@@ -27,12 +27,12 @@ playlistRoutes.get('/:id/tracks',validateStringParam('id'),validateNumberParam('
 // Route: POST /playlist/:id/tracks
 // param: id
 // Description: Endpoint to add one or more items to a user's playlist.
-playlistRoutes.post('/:id/tracks', validateStringParam('id'),validateArrayUriParam('tracks'),validateNumberParam('position') , insertItems)
+playlistRoutes.post('/:id/tracks', validateStringParam('id'),validateArrayParam('uris'),validateNumberParam('position') , insertItems)
 
 // Route: DELTE /playlist/:id/tracks
 // param: id
 // Description: Endpoint to Remove one or more items from a user's playlist.
-playlistRoutes.delete('/:id/tracks', validateStringParam('id'),validateStringParam('snapshot_id'),validateArrayTracksParam('tracks'), deleteItems)
+playlistRoutes.delete('/:id/tracks', validateStringParam('id'),validateStringParam('snapshot_id'),validateArrayParam('tracks'), deleteItems)
 
 // Route: PUT /playlist-change-details
 // Description: Endpoint to Change a playlist's name and public/private state
