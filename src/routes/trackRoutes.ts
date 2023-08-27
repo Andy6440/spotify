@@ -1,6 +1,6 @@
 
 import express from 'express'
-import {  validateNumberParam, validateTokenParam } from '../middlewares/validation'
+import {  validateNumberParam } from '../validations/validation'
 import { likedSongs, topTrack } from '../controllers/trackController'
 const trackRoutes = express.Router()
 
@@ -12,10 +12,10 @@ const trackRoutes = express.Router()
 
 // Route: GET /topTrack
 // Description: Endpoint to get top track
-trackRoutes.get('/top', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset') , topTrack)
+trackRoutes.get('/top', validateNumberParam('limit'),validateNumberParam('offset') , topTrack)
 
 // Route: GET /topTrack
 // Description: Endpoint to get top track
-trackRoutes.get('/liked', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset'), likedSongs)
+trackRoutes.get('/liked', validateNumberParam('limit'),validateNumberParam('offset'), likedSongs)
 
 export default trackRoutes
