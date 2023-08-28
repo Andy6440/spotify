@@ -1,7 +1,7 @@
 import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
-import AppError from '../models/errors/AppError'
+import AuthenticationError from '../models/errors/AuthenticationError'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 const generateRandomString = (length : number) => {
@@ -60,11 +60,11 @@ export const  getAccessToken = async(code:string) => {
                     refresh_token: response.data.refresh_token,
                 }
             } else {
-                throw new AppError(401,'Invalid token')
+                throw new AuthenticationError('Invalid token')
             }
         })
         .catch((error) => {
-            throw new AppError(error.response.status,error.response.data.error)
+            throw new AuthenticationError(error.response.data.error_description)
         })
 }
 export const  getUser = async(access_token:string) => {
@@ -83,6 +83,6 @@ export const  getUser = async(access_token:string) => {
         return response.data
     })
         .catch((error) => {
-            throw new AppError(error.response.status,error.response.data.error)
+            throw new AuthenticationError(error.response.data.error)
         })
 }

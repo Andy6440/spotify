@@ -1,41 +1,28 @@
 import express from 'express'
-import errorHandler from '../middlewares/errorHandler'
-import { login,callback } from '../controllers/userController'
-import { likedSongs, topTrack } from '../controllers/trackController'
-import { validateNumberParam, validateRequiredParam, validateTokenParam } from '../middlewares/validation'
+import playlistRoutes from './playlistRoutes'
+import trackRoutes from './trackRoutes'
+import authRoutes from './authRoutes'
 const router = express.Router()
 
 /**
- *  UserController Routes
+ *  Playlist Routes
  * 
  * 
  */
-
-// Route: GET /login
-// Description: Endpoint for user login
-router.get('/login',login)
-
-// Route: GET /callback
-// Description: Endpoint for callback after user authentication
-router.get('/callback', validateRequiredParam('code'), callback)
-
+router.use('/playlist', playlistRoutes)
 
 /**
- *  TrackController Routes
+ *  Track Routes
  * 
  * 
  */
+router.use('/track', trackRoutes)
 
-// Route: GET /topTrack
-// Description: Endpoint to get top track
-router.get('/topTrack', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset') , topTrack)
-
-// Route: GET /topTrack
-// Description: Endpoint to get top track
-router.get('/likedSongs', validateTokenParam(),validateNumberParam('limit'),validateNumberParam('offset'), likedSongs)
-
-
-// Middleware for handling errors
-router.use(errorHandler)
+/**
+ *  Auth Routes
+ * 
+ * 
+ */
+router.use('/', authRoutes)
 
 export default router
