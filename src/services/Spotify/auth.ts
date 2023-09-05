@@ -1,7 +1,7 @@
 import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
-import AuthenticationError from '../models/errors/AuthenticationError'
+import AuthenticationError from '../../models/errors/AuthenticationError'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 const generateRandomString = (length : number) => {

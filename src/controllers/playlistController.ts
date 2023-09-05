@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { create, getPlaylistById,editDetails, getItemsById, saveItems ,removeItems} from '../services/playlist'
+import { create, getPlaylistById,editDetails, getItemsById, saveItems ,removeItems} from '../services/Spotify/playlist'
 import { CreatePlaylist, RemoveItems, SaveItems } from '../interfaces/playlist'
 
 

@@ -1,8 +1,8 @@
 
 // import axios from 'axios'
-import { formatTrack } from '../helpers/TrackHelper'
-import { TopTrack, Track } from '../interfaces/spotify'
-import { get } from '../utils/services'
+import { formatTrack } from '../../helpers/TrackHelper'
+import { TopTrack, Track } from '../../interfaces/spotify'
+import { get } from '../../utils/services'
 
 export const getAll = (limit: string ,offset:string ):Promise<Track[]> => {
     const newLimit =  parseInt(limit ) ||process.env.LIMIT

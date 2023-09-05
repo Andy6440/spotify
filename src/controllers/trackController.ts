@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getAll ,getLikedSongs } from '../services/spotify'
+import { getAll ,getLikedSongs } from '../services/Spotify/spotify'
 
 export const topTrack = (req:Request,res :Response,next:NextFunction) =>{
     
