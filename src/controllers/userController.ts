@@ -16,14 +16,24 @@ export const login = (_req:Request,res :Response,next:NextFunction) =>{
     }
 }
 export const callback = async(req:Request,res :Response,next:NextFunction) =>{
-    const code = req.query.code as string 
-    res.cookie('code',code)
+   
     try {
-        const tokens: AccessToken = await getAccessToken(code)
+        let tokens :AccessToken = {
+            access_token:'',
+            refresh_token:''
+        }
+
+        if(req.cookies.user.tokens){
+            tokens = req.cookies.user.tokens
+        }else{
+            const code = req.query.code as string
+            tokens = await getAccessToken(code)
+        }
+        
         const profile : Profile = await getUser(tokens.access_token)
 
-        const user = await UserService.handleUser(profile, tokens)       
-
+        const user = await UserService.handleUser(profile, tokens) 
+        res.cookie('user', {id:user.id,tokens:tokens})
         res.send(user)
     } catch ( err) {
         next(new AuthenticationError('An error occurred in callback'))

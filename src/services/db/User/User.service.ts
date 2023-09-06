@@ -3,10 +3,8 @@
 import { AccessToken, Profile, User } from '../../../interfaces/User'
 import UserRepository from './User.repository'
 
-
-
 class UserService {
-    async handleUser(profile: Profile, tokens:AccessToken): Promise<User|null> {
+    async handleUser(profile: Profile, tokens:AccessToken): Promise<User> {
         const user : User = {
             id:profile.id,
             email:profile.email,
