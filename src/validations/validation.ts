@@ -59,7 +59,7 @@ export const validateArrayParam = (paramName: string) => {
         }
         let regex=null
         let error=null
-        if(paramValue ===  'tracks'){
+        if(paramName ===  'tracks'){
             regex = /"uri":\s*"spotify:track:[a-zA-Z0-9]{22}"/g
             const matches = JSON.stringify(paramValue).match(regex)
             if( matches && matches.length !== paramValue.length){
@@ -74,6 +74,7 @@ export const validateArrayParam = (paramName: string) => {
             default:
                 regex =  /^spotify:artist:[a-zA-Z0-9]{22}$/
             } 
+            
             if (typeof paramValue !== 'object' || regex && !regex.test(paramValue)) {
                 error = true
             }   
