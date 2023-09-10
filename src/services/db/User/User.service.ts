@@ -20,6 +20,9 @@ class UserService {
         } else {
             return await UserRepository.createUser(user)
         }       
+    } 
+    async findUser(id:string): Promise<User|null>  {
+        return await UserRepository.findUserById(id)    
     }
 }
 
