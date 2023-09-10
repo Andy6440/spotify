@@ -30,7 +30,9 @@ export const insertItems = (req:Request,res :Response,next:NextFunction) =>{
 export const deleteItems = (req:Request,res :Response,next:NextFunction) =>{    
     const id = req.params.id as string
     const params = req.body as RemoveItems
-    removeItems(id,params).then(response=> res.send(response)).catch(err => next(err))    
+    const cookies = req.cookies
+    const token = cookies.access_token as string
+    removeItems(id,params,token).then(response=> res.send(response)).catch(err => next(err))    
 }
 
 export const changePlaylistDetails = (req:Request,res :Response,next:NextFunction) =>{    

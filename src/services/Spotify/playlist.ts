@@ -88,14 +88,15 @@ export const getItemsById = (id: string,limit : string , offset :string,token:st
     })
 }
 
-export const removeItems = (id: string,params: RemoveItems ):Promise<JSON> => {
-    const endpoint = `v1/playlists/${id}/tracks`
+export const removeItems = (id: string,params: RemoveItems,token:string ):Promise<JSON> => {
+    const endpoint = `playlists/${id}/tracks`
+        
     const queryParams = {
         tracks: params.tracks,
         snapshot_id: params.snapshot_id,
     } 
     return new Promise((resolve, reject) => {
-        remove(endpoint,queryParams)
+        remove(endpoint,queryParams,token)
             .then((response) => {
                 resolve(response)
             })
