@@ -43,5 +43,7 @@ export const getItems = (req:Request,res :Response,next:NextFunction) =>{
     const id = req.params.id as string
     const limit =  req.query.limit as string
     const offset =req.query.offset as  string
-    getItemsById(id,limit,offset).then(response=> res.send(response)).catch(err => next(err))    
+    const cookies = req.cookies
+    const token = cookies.access_token as string
+    getItemsById(id,limit,offset,token).then(response=> res.send(response)).catch(err => next(err))    
 }
