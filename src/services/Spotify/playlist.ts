@@ -19,15 +19,15 @@ export const getPlaylistById = (id: string ):Promise<Playlist> => {
             })
     })
 }
-export const create = (userId: string,params: CreatePlaylist ):Promise<Playlist> => {
-    const endpoint = `v1/users/${userId}/playlists`
+export const create = (userId: string,params: CreatePlaylist,token: string):Promise<Playlist> => {
+    const endpoint = `users/${userId}/playlists`
     const queryParams = {
         name: params.name,
         description: params.description,
         public: params.public,
     } 
     return new Promise((resolve, reject) => {
-        post(endpoint,queryParams)
+        post(endpoint,queryParams,token)
             .then((response) => {
                 const playlist = response as Playlist
                 const result = formatPlaylist(playlist)
@@ -38,7 +38,7 @@ export const create = (userId: string,params: CreatePlaylist ):Promise<Playlist>
             })
     })
 }
-export const saveItems = (id: string,params: SaveItems ):Promise<JSON> => {
+export const saveItems = (id: string,params: SaveItems,token:string ):Promise<JSON> => {
     const endpoint = `v1/playlists/${id}/tracks`
 
     const queryParams = {
@@ -46,7 +46,7 @@ export const saveItems = (id: string,params: SaveItems ):Promise<JSON> => {
         position: params.position,
     } 
     return new Promise((resolve, reject) => {
-        post(endpoint,queryParams)
+        post(endpoint,queryParams,token)
             .then((response) => {
                 resolve(response)
             })

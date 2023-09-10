@@ -14,7 +14,6 @@ export const getAll = (limit: string ,offset:string,token:string ):Promise<Track
             .then((response) => {
                 const topTrackData = response as TopTrack
                 const result = formatTrack(topTrackData)
-                console.log(result)
                 resolve(result)
             })
             .catch((error) => {

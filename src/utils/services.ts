@@ -21,23 +21,30 @@ export const get = async (endpoint: string, access_token: string): Promise<any> 
         })
 }
 
-
-export const post = (endpoint:string,data: any):Promise<any> => {  
-    const token = process.env.TOKEN as string
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
+export const post = async (endpoint: string, data: any, access_token: string): Promise<any> => {
+    
+    const postHeaders = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json', // Cambiado a 'application/json' para enviar datos JSON
+        Authorization: `Bearer ${access_token}`,
     }
-    return new Promise((resolve, reject) => {
-        axios.post(`https://api.spotify.com/${endpoint}`, data, { headers })
-            .then(response => {
-                resolve(response.data)
-            })
-            .catch(error => {
-                reject(error)
-            })
+
+    return await axios({
+        method: 'post',
+        url: `https://api.spotify.com/v1/${endpoint}`,
+        headers: postHeaders,
+        data: data // Aquí es donde enviamos los datos
     })
+        .then((response) => {   
+            console.log('response',response)         
+            return response.data
+        })
+        .catch((error) => {
+            console.log('error',error) 
+            throw new AuthenticationError(error.response.data.error)
+        })
 }
+
 export const remove = (endpoint:string,data: any):Promise<any> => {  
     const token = process.env.TOKEN as string
     const headers = {
