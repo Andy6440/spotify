@@ -18,7 +18,7 @@ export const  redirectString = () =>{
     
     const state = generateRandomString(16)
   
-    const scope = 'user-read-private user-read-email user-top-read'
+    const scope = 'user-read-private user-read-email user-top-read user-library-read user-library-modify'
 
   
     const queryParams = querystring.stringify({
@@ -72,7 +72,7 @@ export const  getAccessToken = async(code:string) => {
 export const  getUser = async(access_token:string) => {
     const getUrl = 'me'    
     return  await  get(getUrl,access_token).then((response) => {
-        return response.data
+        return response
     })
         .catch((error) => {
             throw new AuthenticationError(error.response.data.error)

@@ -8,13 +8,12 @@ export const get = async (endpoint: string, access_token: string): Promise<any> 
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Bearer ${access_token}`,
     }
-
     return await axios({
         method: 'get',
         url: `https://api.spotify.com/v1/${endpoint}`,
         headers: getHeaders,
     })
-        .then((response) => {
+        .then((response) => {            
             return response.data
         })
         .catch((error) => {

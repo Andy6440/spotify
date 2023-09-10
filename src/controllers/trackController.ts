@@ -15,8 +15,9 @@ export const topTrack = (req:Request,res :Response,next:NextFunction) =>{
 export const likedSongs = async(req:Request,res :Response,next:NextFunction) =>{
     const limit =  req.query.limit as string
     const offset =req.query.offset as  string
-   
-    getLikedSongs(limit,offset)
+    const cookies = req.cookies
+    const token = cookies.access_token
+    getLikedSongs(limit,offset,token)
         .then(response => {
             res.send(response)
         })
