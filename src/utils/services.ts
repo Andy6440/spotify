@@ -28,19 +28,16 @@ export const post = async (endpoint: string, data: any, access_token: string): P
         'Content-Type': 'application/json', // Cambiado a 'application/json' para enviar datos JSON
         Authorization: `Bearer ${access_token}`,
     }
-
     return await axios({
         method: 'post',
         url: `https://api.spotify.com/v1/${endpoint}`,
         headers: postHeaders,
-        data: data // Aquí es donde enviamos los datos
+        data: JSON.stringify(data) // Aquí es donde enviamos los datos
     })
-        .then((response) => {   
-            console.log('response',response)         
+        .then((response) => {
             return response.data
         })
         .catch((error) => {
-            console.log('error',error) 
             throw new AuthenticationError(error.response.data.error)
         })
 }

@@ -19,7 +19,7 @@ export const  redirectString = () =>{
     const state = generateRandomString(16)
   
     const scope = 'user-read-private user-read-email user-top-read user-library-read user-library-modify playlist-modify-public playlist-modify-private'   
-  
+    
     const queryParams = querystring.stringify({
         client_id: process.env.CLIENT_ID,
         response_type: 'code',

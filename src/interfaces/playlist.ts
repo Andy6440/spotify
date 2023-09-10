@@ -5,7 +5,7 @@ export interface CreatePlaylist {
     public: boolean
 }
 export interface SaveItems {
-    tracks: string[];
+    uris: string[];
     position: number
 }
 export interface RemoveItems {

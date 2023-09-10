@@ -39,10 +39,9 @@ export const create = (userId: string,params: CreatePlaylist,token: string):Prom
     })
 }
 export const saveItems = (id: string,params: SaveItems,token:string ):Promise<JSON> => {
-    const endpoint = `v1/playlists/${id}/tracks`
-
+    const endpoint = `playlists/${id}/tracks`
     const queryParams = {
-        uris: params.tracks,
+        uris: params.uris,
         position: params.position,
     } 
     return new Promise((resolve, reject) => {

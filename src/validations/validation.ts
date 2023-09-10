@@ -74,6 +74,7 @@ export const validateArrayParam = (paramName: string) => {
             default:
                 regex =  /^spotify:artist:[a-zA-Z0-9]{22}$/
             } 
+            
             if (typeof paramValue !== 'object' || regex && !regex.test(paramValue)) {
                 error = true
             }   
