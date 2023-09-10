@@ -36,6 +36,6 @@ playlistRoutes.delete('/:id/tracks', validateStringParam('id'),validateStringPar
 
 // Route: PUT /playlist-change-details
 // Description: Endpoint to Change a playlist's name and public/private state
-playlistRoutes.put('/playlist/change-details/:id', validateStringParam('id'),validatePlaylistParams(), changePlaylistDetails)
+playlistRoutes.put('/details/:id', validateStringParam('id'),validatePlaylistParams(), changePlaylistDetails)
 
 export default playlistRoutes

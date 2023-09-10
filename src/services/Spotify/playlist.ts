@@ -55,15 +55,15 @@ export const saveItems = (id: string,params: SaveItems,token:string ):Promise<JS
     })
 }
 
-export const editDetails = (id: string, params: CreatePlaylist): Promise<any> => {
-    const endpoint = `v1/playlists/${id}`
+export const editDetails = (id: string, params: CreatePlaylist,token:string): Promise<any> => {
+    const endpoint = `playlists/${id}`
     const queryParams = {
         name: params.name,
         description: params.description,
         public: params.public,
     }
     return new Promise((resolve, reject) => {
-        put(endpoint, queryParams)
+        put(endpoint, queryParams,token)
             .then((response) => {
                 resolve(response)
             })
