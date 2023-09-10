@@ -1,7 +1,8 @@
 import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
-import AuthenticationError from '../models/errors/AuthenticationError'
+import AuthenticationError from '../../models/errors/AuthenticationError'
+import { get } from '../../utils/services'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 const generateRandomString = (length : number) => {
@@ -17,8 +18,8 @@ export const  redirectString = () =>{
     
     const state = generateRandomString(16)
   
-    const scope = 'user-read-private user-read-email'
-  
+    const scope = 'user-read-private user-read-email user-top-read user-library-read user-library-modify playlist-modify-public playlist-modify-private'   
+    
     const queryParams = querystring.stringify({
         client_id: process.env.CLIENT_ID,
         response_type: 'code',
@@ -68,19 +69,9 @@ export const  getAccessToken = async(code:string) => {
         })
 }
 export const  getUser = async(access_token:string) => {
-    const getUrl = 'https://api.spotify.com/v1/me'
-    const getHeaders = {
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${access_token}`,
-    }
-          
-    return axios({
-        method: 'get',
-        url: getUrl,
-        headers: getHeaders,
-    }).then((response) => {
-        return response.data
+    const getUrl = 'me'    
+    return  await  get(getUrl,access_token).then((response) => {
+        return response
     })
         .catch((error) => {
             throw new AuthenticationError(error.response.data.error)

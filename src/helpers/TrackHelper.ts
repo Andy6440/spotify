@@ -1,4 +1,6 @@
+import { UserTopTrack } from '../interfaces/Track'
 import { Artist, SpotifyArtist, SpotifyTrack, TopTrack, Track } from '../interfaces/spotify'
+import { formatItem } from './PlaylistHelper'
 
 export const formatTrack = (response : TopTrack) =>{
     const items = response.items.map((item: SpotifyTrack) => {
@@ -20,4 +22,18 @@ export const formatTrack = (response : TopTrack) =>{
 
     return items
 
+}
+
+export const formatUserTopTrack = (response : UserTopTrack) =>{
+    
+    const items = formatItem(response.items)
+    return {
+        href: response.href,
+        limit: response.limit,
+        next: response.next,
+        offset: response.offset,
+        previous: response.previous,
+        total: response.total,
+        items:items
+    } as UserTopTrack
 }
