@@ -8,6 +8,7 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
     if (!req.cookies.access_token) {   
         const id = process.env.USER_ID as string    
         const user = await UserService.findUser(id)
+        console.log(user)
         if(user){
             res.cookie('access_token', user.token, { maxAge: 900000, httpOnly: true })
         }else {

@@ -8,7 +8,7 @@ import { get, post, put, remove } from '../../utils/services'
 export const getPlaylistById = (id: string ):Promise<Playlist> => {
     const endpoint = `v1/playlists/${id}`
     return new Promise((resolve, reject) => {
-        get(endpoint)
+        get(endpoint,'')
             .then((response) => {
                 const playlist = response as Playlist
                 const result = formatPlaylist(playlist)
@@ -78,7 +78,7 @@ export const editDetails = (id: string, params: CreatePlaylist): Promise<any> =>
 export const getItemsById = (id: string,limit : string , offset :string ):Promise<Item[]> => {
     const endpoint = `v1/playlists/${id}/tracks?time_range=short_term&offset=${offset}&limit=${limit}`
     return new Promise((resolve, reject) => {
-        get(endpoint)
+        get(endpoint,'')
             .then((response) => {
                 const result = formatItem(response.items)
                 resolve(result)

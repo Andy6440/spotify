@@ -1,9 +1,8 @@
 import axios from 'axios'
 import AuthenticationError from '../models/errors/AuthenticationError'
 
-
-
-export const newget = async (endpoint: string, access_token: string): Promise<any> => {
+export const get = async (endpoint: string, access_token: string): Promise<any> => {
+    
     const getHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -16,34 +15,14 @@ export const newget = async (endpoint: string, access_token: string): Promise<an
         headers: getHeaders,
     })
         .then((response) => {
-            return response
-        }
-        )
+            return response.data
+        })
         .catch((error) => {
             throw new AuthenticationError(error.response.data.error)
-        }
-        )
+        })
 }
-   
 
 
-export const get = (endpoint:string):Promise<any> => {  
-    const token = process.env.TOKEN as string
-    return new Promise((resolve, reject) => {
-        axios
-            .get(`https://api.spotify.com/${endpoint}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                resolve(response.data)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
-}
 export const post = (endpoint:string,data: any):Promise<any> => {  
     const token = process.env.TOKEN as string
     const headers = {

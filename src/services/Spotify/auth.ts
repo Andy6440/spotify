@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
 import AuthenticationError from '../../models/errors/AuthenticationError'
-import { newget } from '../../utils/services'
+import { get } from '../../utils/services'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 const generateRandomString = (length : number) => {
@@ -18,7 +18,8 @@ export const  redirectString = () =>{
     
     const state = generateRandomString(16)
   
-    const scope = 'user-read-private user-read-email'
+    const scope = 'user-read-private user-read-email user-top-read'
+
   
     const queryParams = querystring.stringify({
         client_id: process.env.CLIENT_ID,
@@ -70,7 +71,7 @@ export const  getAccessToken = async(code:string) => {
 }
 export const  getUser = async(access_token:string) => {
     const getUrl = 'me'    
-    return  await  newget(getUrl,access_token).then((response) => {
+    return  await  get(getUrl,access_token).then((response) => {
         return response.data
     })
         .catch((error) => {
