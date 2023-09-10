@@ -5,10 +5,10 @@ import { get, post, put, remove } from '../../utils/services'
 
 
 
-export const getPlaylistById = (id: string ):Promise<Playlist> => {
-    const endpoint = `v1/playlists/${id}`
+export const getPlaylistById = (id: string,token:string ):Promise<Playlist> => {
+    const endpoint = `playlists/${id}`
     return new Promise((resolve, reject) => {
-        get(endpoint,'')
+        get(endpoint,token)
             .then((response) => {
                 const playlist = response as Playlist
                 const result = formatPlaylist(playlist)

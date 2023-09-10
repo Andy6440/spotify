@@ -5,7 +5,9 @@ import { CreatePlaylist, RemoveItems, SaveItems } from '../interfaces/playlist'
 
 export const getPlaylist = (req:Request,res :Response,next:NextFunction) =>{    
     const id = req.params.id as string
-    getPlaylistById(id).then(response=> res.send(response)).catch(err => next(err))
+    const cookies = req.cookies
+    const token = cookies.access_token as string
+    getPlaylistById(id,token).then(response=> res.send(response)).catch(err => next(err))
     
 }
 
