@@ -18,6 +18,7 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
         const user = await UserService.findUser(id)
 
         if (user) {
+            // Set the access token cookie
             res.cookie('access_token', user.token, { maxAge: 900000, httpOnly: true })
         } else {
             throw new AuthenticationError('User not found')
