@@ -2,7 +2,12 @@ import { UserTopTrack } from '../interfaces/Track'
 import { Artist, SpotifyArtist, SpotifyTrack, TopTrack, Track } from '../interfaces/spotify'
 import { formatItem } from './PlaylistHelper'
 
-export const formatTrack = (response : TopTrack) =>{
+/**
+ * Formats the response from the Spotify API into a custom Track object.
+ * @param response - The response from the Spotify API.
+ * @returns An array of Track objects.
+ */
+export const formatTrack = (response: TopTrack): Track[] => {
     const items = response.items.map((item: SpotifyTrack) => {
         const artists = item.artists.map((artist: SpotifyArtist) => {
             return {
@@ -21,12 +26,18 @@ export const formatTrack = (response : TopTrack) =>{
     })
 
     return items
-
 }
 
-export const formatUserTopTrack = (response : UserTopTrack) =>{
-    
+/**
+ * Formats the user's top track data.
+ * @param response - The response object containing the user's top track data.
+ * @returns The formatted user's top track data.
+ */
+export const formatUserTopTrack = (response: UserTopTrack): UserTopTrack => {
+    // Format the items array using the formatItem function
     const items = formatItem(response.items)
+
+    // Return the formatted user's top track data
     return {
         href: response.href,
         limit: response.limit,
@@ -34,6 +45,6 @@ export const formatUserTopTrack = (response : UserTopTrack) =>{
         offset: response.offset,
         previous: response.previous,
         total: response.total,
-        items:items
-    } as UserTopTrack
+        items: items
+    }
 }

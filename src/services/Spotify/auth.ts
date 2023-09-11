@@ -5,6 +5,12 @@ import AuthenticationError from '../../models/errors/AuthenticationError'
 import { get } from '../../utils/services'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
+/**
+ * Generates a random string of the given length.
+ * 
+ * @param length - Length of the string to generate.
+ * @returns A random string.
+ */
 const generateRandomString = (length : number) => {
     let text = ''
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -14,6 +20,11 @@ const generateRandomString = (length : number) => {
     return text
 }
 
+/**
+ * Constructs the redirect string for Spotify authentication.
+ * 
+ * @returns An object containing the state, stateKey, and query parameters.
+ */
 export const  redirectString = () =>{
     
     const state = generateRandomString(16)
@@ -34,6 +45,13 @@ export const  redirectString = () =>{
     }
 }
 
+/**
+ * Fetches the access token from Spotify using the provided code.
+ * 
+ * @param code - The authorization code.
+ * @returns A promise that resolves to an object containing the access and refresh tokens.
+ * @throws {AuthenticationError} Throws an error if the token is invalid or any other authentication error occurs.
+ */
 export const  getAccessToken = async(code:string) => {
     const postHeaders = {
         Accept: 'application/json',
@@ -68,6 +86,13 @@ export const  getAccessToken = async(code:string) => {
             throw new AuthenticationError(error.response.data.error_description)
         })
 }
+/**
+ * Fetches the authenticated user's details from Spotify.
+ * 
+ * @param access_token - The access token for the user.
+ * @returns A promise that resolves to the user's details.
+ * @throws {AuthenticationError} Throws an error if there's an issue fetching the user's details.
+ */
 export const  getUser = async(access_token:string) => {
     const getUrl = 'me'    
     return  await  get(getUrl,access_token).then((response) => {
