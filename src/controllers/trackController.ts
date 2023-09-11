@@ -28,9 +28,6 @@ export const topTrack = async (req: Request, res: Response, next: NextFunction) 
     }
 }
 
-
-
-
 /**
  * Handle request for retrieving liked songs.
  * @param req - The request object.
