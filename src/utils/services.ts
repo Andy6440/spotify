@@ -25,6 +25,7 @@ export const get = async (endpoint: string, access_token: string): Promise<any> 
             return response.data
         })
         .catch((error) => {
+            console.log(error.response.data)
             throw new AuthenticationError(error.response.data.error)
         })
 }
