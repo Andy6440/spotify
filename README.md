@@ -38,7 +38,10 @@ npm install
 docker-compose build
 docker-compose up
 ```
+## Authorization:
+- After starting the containers, you need to authorize the API. Visit http://localhost:8888/login to do so. Once logged in, you'll receive an access token that lasts for one hour.
+
 ## Access:
-- Once the containers are up and running, the application will be accessible at `http://localhost:8888`. Additionally, you can access the Mongo-Express interface at `http://localhost:8081` to manage the database.
+- With the API authorized, you can now use it as intended. The application will be accessible at http://localhost:8888. Additionally, you can access the Mongo-Express interface at http://localhost:8081 to manage the database.
 
 GitHub: @Andy6440

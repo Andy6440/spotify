@@ -2,7 +2,13 @@
 import { Request, Response, NextFunction } from 'express'
 import ValidationError from '../models/errors/ValidationError.'
 
-// Extract a parameter value from a request
+/**
+ * Extracts the value of a parameter from the request.
+ * 
+ * @param req - The Express request object.
+ * @param paramName - The name of the parameter to extract.
+ * @returns The value of the parameter or null if not found.
+ */
 const extractParamValue = (req: Request, paramName: string): any => {
     if(req.query[paramName] !== undefined){
         return req.query[paramName]
@@ -13,7 +19,12 @@ const extractParamValue = (req: Request, paramName: string): any => {
     }
     return null
 }
-// Middleware for validating a required parameter
+/**
+ * Middleware to validate the presence of a required parameter in the request.
+ * 
+ * @param paramName - The name of the required parameter.
+ * @returns Middleware function.
+ */
 export const validateRequiredParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const param = extractParamValue(req, paramName)
@@ -24,7 +35,12 @@ export const validateRequiredParam = (paramName: string) => {
     }
 }
 
-// Middleware for validating an number parameter
+/**
+ * Middleware to validate that a parameter in the request is a valid number.
+ * 
+ * @param name - The name of the parameter to validate.
+ * @returns Middleware function.
+ */
 export const validateNumberParam = (name:string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
         let param = extractParamValue(req, name)  
@@ -35,44 +51,54 @@ export const validateNumberParam = (name:string) => {
         next()
     }
 }
-
-// Middleware for validating an string parameter
+/**
+ * Middleware to validate that a parameter in the request is a valid string.
+ * 
+ * @param paramName - The name of the parameter to validate.
+ * @returns Middleware function.
+ */
 export const validateStringParam = (paramName: string) => {
     return (req: Request, _res: Response, next: NextFunction) => {
         const paramValue = extractParamValue(req, paramName) 
-        // Verificar si el valor del parámetro es una cadena válida
         if (typeof paramValue !== 'string') {
             return next(new ValidationError(`${paramName}: Invalid type, expected string`))
         }  
-        // Si llegamos aquí, el valor del parámetro es una cadena válida
         next()
     }
 }
 
-// Middleware for validating an array of string parameter
+/**
+ * Middleware to validate that a parameter in the request is a valid array.
+ * 
+ * @param paramName - The name of the parameter to validate.
+ * @returns Middleware function.
+ */
 export const validateArrayParam = (paramName: string) => {
-   
     return (req: Request, _res: Response, next: NextFunction) => {
-        const paramValue =req.body ? req.body[paramName] : null 
-        if(typeof paramValue !== 'object'     ){
-            return next(new ValidationError(`${paramName}: Invalid Type : expected an array`))
+        const paramValue = req.body ? req.body[paramName] : null
+        
+        if (typeof paramValue !== 'object') {
+            return next(new ValidationError(`${paramName}: Invalid Type: expected an array`))
         }
-        let regex=null
-        let error=null
-        if(paramName ===  'tracks'){
+        
+        let regex = null
+        let error = null
+        
+        if (paramName === 'tracks') {
             regex = /"uri":\s*"spotify:track:[a-zA-Z0-9]{22}"/g
             const matches = JSON.stringify(paramValue).match(regex)
-            if( matches && matches.length !== paramValue.length){
+            
+            if (matches && matches.length !== paramValue.length) {
                 error = true
             }
-        }else{
+        } else {
             switch (paramName) {
             case 'uris':
                 regex = /^spotify:track:[a-zA-Z0-9]{22}$/
                 break
-            
+                
             default:
-                regex =  /^spotify:artist:[a-zA-Z0-9]{22}$/
+                regex = /^spotify:artist:[a-zA-Z0-9]{22}$/
             } 
             
             if (typeof paramValue !== 'object' || regex && !regex.test(paramValue)) {
@@ -80,7 +106,7 @@ export const validateArrayParam = (paramName: string) => {
             }   
         }
 
-        if(error){
+        if (error) {
             return next(new ValidationError(`${paramName}: Invalid Track format in array`))
         }
        

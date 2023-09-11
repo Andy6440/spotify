@@ -1,6 +1,14 @@
 import axios from 'axios'
 import AuthenticationError from '../models/errors/AuthenticationError'
 
+/**
+ * Sends a GET request to the specified Spotify API endpoint.
+ * 
+ * @param endpoint - The Spotify API endpoint.
+ * @param access_token - The access token for authentication.
+ * @returns The response data from the API.
+ * @throws {AuthenticationError} Throws an error if the request fails.
+ */
 export const get = async (endpoint: string, access_token: string): Promise<any> => {
     
     const getHeaders = {
@@ -21,6 +29,15 @@ export const get = async (endpoint: string, access_token: string): Promise<any> 
         })
 }
 
+/**
+ * Sends a POST request to the specified Spotify API endpoint.
+ * 
+ * @param endpoint - The Spotify API endpoint.
+ * @param data - The data to be sent in the request body.
+ * @param access_token - The access token for authentication.
+ * @returns The response data from the API.
+ * @throws {AuthenticationError} Throws an error if the request fails.
+ */
 export const post = async (endpoint: string, data: any, access_token: string): Promise<any> => {
     
     const postHeaders = {
@@ -42,6 +59,15 @@ export const post = async (endpoint: string, data: any, access_token: string): P
         })
 }
 
+/**
+ * Sends a DELETE request to the specified Spotify API endpoint.
+ * 
+ * @param endpoint - The Spotify API endpoint.
+ * @param data - The data to be sent in the request body.
+ * @param access_token - The access token for authentication.
+ * @returns The response data from the API.
+ * @throws {AuthenticationError} Throws an error if the request fails.
+ */
 export const remove = async (endpoint: string, data: any, access_token: string): Promise<any> => {
     
     const postHeaders = {
@@ -63,6 +89,16 @@ export const remove = async (endpoint: string, data: any, access_token: string):
             throw new AuthenticationError(error.response.data.error)
         })
 }
+
+/**
+ * Sends a PUT request to the specified Spotify API endpoint.
+ * 
+ * @param endpoint - The Spotify API endpoint.
+ * @param data - The data to be sent in the request body.
+ * @param access_token - The access token for authentication.
+ * @returns The response data from the API.
+ * @throws {AuthenticationError} Throws an error if the request fails.
+ */
 export const put = async (endpoint: string, data: any, access_token: string): Promise<any> => {
     
     const postHeaders = {
