@@ -12,7 +12,13 @@ class AppError extends Error {
     }
 
 
-    private getDefaultMessage (statusCode:number) {
+    /**
+     * Returns the default message for a given status code.
+     * 
+     * @param {number} statusCode - The status code to get the default message for.
+     * @returns {string} - The default message for the given status code.
+     */
+    private getDefaultMessage(statusCode: number): string {
         switch (statusCode) {
         case 304: return 'Not Modified'
         case 400: return 'Bad Request - The request could not be understood by the server due to malformed syntax.'
@@ -25,7 +31,7 @@ class AppError extends Error {
         case 503: return 'Service Unavailable - The server is currently unable to handle the request due to a temporary condition which will be alleviated after some delay.'
         default: return 'An error occurred.'
         }
-    } 
+    }
 }
   
 export default AppError
