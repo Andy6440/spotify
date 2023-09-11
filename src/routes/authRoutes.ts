@@ -36,7 +36,7 @@ authRoutes.get('/callback', validateRequiredParam('code'), callback)
  */
 authRoutes.use(authenticationMiddleware)
 /**
- * Retrieve the authenticated user's profile.
+ * Get user profile endpoint.
  * 
  * @route GET /user
  * @param {string} access_token - The authentication token. Found in the cookies.
