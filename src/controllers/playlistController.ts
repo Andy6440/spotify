@@ -143,7 +143,7 @@ export const changePlaylistDetails = (req:Request,res :Response,next:NextFunctio
  * @param {Response} res - The response object.
  * @param {NextFunction} next - The next function.
  */
-export const getItems = (req: Request, res: Response, next: NextFunction) => {
+export const getItems = async(req: Request, res: Response, next: NextFunction) => {
     try {
         // Extract the playlist ID from the request parameters
         const { id } = req.params
@@ -152,7 +152,7 @@ export const getItems = (req: Request, res: Response, next: NextFunction) => {
         // Retrieve the access token from the cookies
         const { access_token } = req.cookies
         // Get items from a playlist
-        const result = getItemsById(id, limit, offset, access_token)
+        const result = await getItemsById(id, limit, offset, access_token)
         // Send the result
         res.send(result)
     } catch (error) {
