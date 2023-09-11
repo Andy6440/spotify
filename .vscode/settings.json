@@ -1,4 +1,6 @@
 {
     "eslint.codeActionsOnSave.mode": "problems",
-    "eslint.format.enable": true
+    "eslint.format.enable": true,
+    "window.autoDetectColorScheme": true,
+    "workbench.activityBar.visible": true
 }
