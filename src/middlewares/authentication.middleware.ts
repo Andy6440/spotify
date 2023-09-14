@@ -11,8 +11,7 @@ import UserService from '../services/db/User/User.service'
  * @param next - The next function to call
  */
 const authenticationMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.cookies.access_token) {
-        
+    if (!req.cookies) {
         const id = process.env.USER_ID as string
         // Find the user by ID on the database
         const user = await UserService.findUser(id)

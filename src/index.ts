@@ -4,22 +4,10 @@ import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 import errorHandler from './middlewares/errorHandler'
 import { validateEnvVariables } from './validations/startupValidations'
-import mongoose from 'mongoose'
-
-const uri = 'mongodb://mongo:27017/spotify'
-  
-// Connect to MongoDB
-mongoose.connect(uri)
-    .then((db) => {
-        console.log('Conectado a MongoDB',db.connection.host)
-    })
-    .catch((error) => {
-        console.error('Error al conectar a MongoDB:', error)
-    })
-
+import connectDB from './database/connection.database'
 // Validate environment variables
 validateEnvVariables()
-
+connectDB()
 // Initialize the Express application.
 const app = express()
 const port =process.env.PORT

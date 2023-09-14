@@ -18,6 +18,10 @@ class UserRepository {
     async findUserById(id: string): Promise<User | null> {
         return await UserModel.findOne({ id })
     }
+    
+    async getAll(): Promise<User[]> {
+        return await UserModel.find()
+    }
         
     /**
      * Updates a user's details and profile.

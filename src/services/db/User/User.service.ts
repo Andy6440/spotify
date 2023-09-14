@@ -24,6 +24,9 @@ class UserService {
     async findUser(id:string): Promise<User|null>  {
         return await UserRepository.findUserById(id)    
     }
+    async getAll(): Promise<User[]>  {
+        return await UserRepository.getAll()    
+    }
 }
 
 export default new UserService()
