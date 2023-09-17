@@ -42,8 +42,8 @@ class UserRepository {
      * @param user - The user data to create.
      * @returns A promise that resolves to the created user.
      */    
-    async createUser(user:User): Promise<User> {
-        await ProfileModel.create(user.profile)
+    async createUser(user:User): Promise<User> {   
+        await ProfileModel.create(user.profile)     
         await UserModel.create(user)
         return user
     }    

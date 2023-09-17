@@ -4,13 +4,16 @@ export interface User {
     id: string;
     email: string;
     profile:Profile ;
-    token: string;
-    refresh: string;
+    AccessToken:AccessToken,
+    refresh_token: string
 }
 
-export interface AccessToken {
-    access_token: string;
-    refresh_token: string;
+export interface AccessToken {  
+    access_token : string
+    refresh_token : string|null,
+    expires_in : number,
+    scope : string
+    token_type: string
 }
 
 export interface Profile {

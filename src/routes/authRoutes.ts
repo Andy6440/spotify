@@ -1,6 +1,6 @@
 
 import express from 'express'
-import { callback,  login,UserProfile } from '../controllers/userController'
+import { callback,  login,UserProfile ,refreshToken} from '../controllers/userController'
 import { validateRequiredParam } from '../validations/validation'
 import authenticationMiddleware from '../middlewares/authentication.middleware'
 const authRoutes = express.Router()
@@ -43,4 +43,13 @@ authRoutes.use(authenticationMiddleware)
  */
 authRoutes.get('/user',  UserProfile)
 
+/**
+ * Refresh token endpoint
+ * 
+ * @route POST /refresh-token
+ * 
+ * @example
+ * POST /refresh-token
+ */
+authRoutes.post('/refresh-token',refreshToken)
 export default authRoutes

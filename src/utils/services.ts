@@ -25,7 +25,6 @@ export const get = async (endpoint: string, access_token: string): Promise<any> 
             return response.data
         })
         .catch((error) => {
-            console.log(error.response.data)
             throw new AuthenticationError(error.response.data.error)
         })
 }
@@ -51,6 +50,26 @@ export const post = async (endpoint: string, data: any, access_token: string): P
         url: `https://api.spotify.com/v1/${endpoint}`,
         headers: postHeaders,
         data: JSON.stringify(data) // Aquí es donde enviamos los datos
+    })
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => {
+            throw new AuthenticationError(error.response.data.error)
+        })
+}
+export const postBasicAuth = async (endpoint: string, data: any): Promise<any> => {
+    // Base64 encode the client ID and client secret
+    const basic = Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64')
+    const postHeaders =  {
+        'Authorization': `Basic ${basic}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    return await axios({
+        method: 'post',
+        url: `https://accounts.spotify.com/api/${endpoint}`,
+        headers: postHeaders,
+        data: data // Aquí es donde enviamos los datos
     })
         .then((response) => {
             return response.data

@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'query-string'
 import crypto from 'crypto'
 import AuthenticationError from '../../models/errors/AuthenticationError'
-import { get } from '../../utils/services'
+import { get, postBasicAuth } from '../../utils/services'
 const stateKey = crypto.randomBytes(20).toString('hex')
 
 /**
@@ -74,16 +74,23 @@ export const  getAccessToken = async(code:string) => {
     })
         .then((response) => {
             if (response.status === 200) {
-                return {
-                    access_token: response.data.access_token,
-                    refresh_token: response.data.refresh_token,
-                }
+                return response.data
             } else {
                 throw new AuthenticationError('Invalid token')
             }
         })
         .catch((error) => {
             throw new AuthenticationError(error.response.data.error_description)
+        })
+}
+export const  refreshAccessToken = async(refresh_token:string) => {
+    const url = 'token' 
+    const data  = `grant_type=refresh_token&refresh_token=${refresh_token}`
+    return  await  postBasicAuth(url,data).then((response) => {
+        return response
+    })
+        .catch((error) => {
+            throw new AuthenticationError(error.response.data.error)
         })
 }
 /**

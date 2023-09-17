@@ -11,18 +11,21 @@ import UserService from '../services/db/User/User.service'
  * @param next - The next function to call
  */
 const authenticationMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.cookies) {
-        const id = process.env.USER_ID as string
-        // Find the user by ID on the database
-        const user = await UserService.findUser(id)
-
-        if (user) {
-            // Set the access token cookie
-            res.cookie('access_token', user.token, { maxAge: 900000, httpOnly: true })
-        } else {
-            throw new AuthenticationError('User not found')
+    const id = process.env.USER_ID as string
+    // Find the user by ID on the database
+    const user = await UserService.findUser(id)
+    
+    if (user) {
+        if (!req.cookies || !req.cookies.access_token) {
+            const expiryDate = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+            res.cookie('access_token', user.AccessToken.access_token,{ expires: expiryDate, httpOnly: true })
+            res.cookie('user_id', user.id, { expires: expiryDate, httpOnly: true })
+            res.cookie('refresh_token', user.AccessToken.refresh_token,{ expires: expiryDate, httpOnly: true })
         }
-    }       
+
+    }else{
+        throw new AuthenticationError('User not found')     
+    }
 
     next()
 }

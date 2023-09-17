@@ -1,4 +1,5 @@
 import { Schema,model,Document } from 'mongoose'
+import { AccessToken } from '../../interfaces/User'
 
 
 interface Image {
@@ -10,7 +11,6 @@ interface Image {
 interface ExternalUrls {
     spotify : string
 }
-
 
 interface Profile extends Document {
     id : string;    
@@ -46,24 +46,21 @@ const ProfileSchema = new Schema({
     email : { type: String, required: true },
 
 })
-
 export const ProfileModel = model<Profile>('Profile',ProfileSchema)
-
 
 interface User extends Document {
     id:string;
     email:string;
     profile:Profile;
-    token:string;
-    refresh:string;
+    AccessToken:AccessToken;
 }
 
 const UserSchema = new Schema({
     id : { type: String, required: true },
     email : { type: String, required: true },
     profile :ProfileSchema,
-    token : { type: String, required: true },
-    refresh : { type: String, required: true },
+    refresh_token : {type: String, required: true},
+    AccessToken : {type: Object, required: true}
 })
 
 export const UserModel = model<User>('User',UserSchema)
